@@ -51,6 +51,12 @@ namespace Shadowsocks.View
             });
             ServerDataGrid.ContextMenu = contextMenu1;
             controller.ConfigChanged += controller_ConfigChanged;
+
+            //
+            // KernoPike: Make all columns fill the whole container, display better.
+            //
+            ServerDataGrid.Columns[1].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill; // Server Column
+            autoResize(ServerDataGrid, true);
         }
 
         private MenuItem CreateMenuItem(string text, EventHandler click)
@@ -650,6 +656,18 @@ namespace Shadowsocks.View
             {
                 e.Handled = true;
             }
+        }
+
+        private void autoResize(DataGridView gridView, Boolean miniWidth) {
+            if (miniWidth) {
+                // prevent some column can't show header when auto size processed
+                for (Int32 i = 0; i < gridView.Columns.Count; i++) {
+                    gridView.Columns[i].MinimumWidth = gridView.Columns[i].GetPreferredWidth(DataGridViewAutoSizeColumnMode.ColumnHeader, false);
+                }
+            }
+
+            gridView.AutoResizeColumns();
+            //	gridView.AutoResizeRows();
         }
     }
 }
